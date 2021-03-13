@@ -1,13 +1,15 @@
 const fs = require('fs');
-const filepath = `./test.txt`;
+const settings = require('./settings.json');
 
-fs.watchFile(filepath, (a) => {
-    // console.log(a); // logs file stats, I don't want this
-    let newFile = ((fs.readFileSync(filepath)).toString()).split(`\n`); // ugly
-    console.log(newFile);
-    // get last line of newFile array for newest line then do HUE stuff
-
-    // this works, it's a little slow. Check if the elite journal file uses \n or \r for newlines. You might have to change the split. 
-    
+fs.watchFile(settings.journalFilepath, (a) => {
+    console.log(a); // logs file stats, I don't want this
+    try {
+        let journal = ((fs.readFileSync(settings.journalFilepath)).toString()).split(`\r\n`); // ugly
+        console.log(journal[journal.length - 2]); // last line is blank
+    }
+    catch(err) {
+        console.error(err);
+    }
+    // get journal event type
+    // do HUE stuff if there's HUE stuff to do with it 
 });
-
